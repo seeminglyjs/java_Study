@@ -1,0 +1,67 @@
+HashSet이란?
+HashSet은 Set 인터페이스의 구현 클래스입니다. 그렇기에 Set의 성질을 그대로 상속받습니다. Set은 객체를 중복해서 저장할 수 없고 하나의 null 값만 저장할 수 있습니다. 또한 저장 순서가 유지되지 않습니다. 만약 요소의 저장 순서를 유지해야 한다면 JDK 1.4부터 제공하는 LinkedHashSet 클래스를 사용하면 됩니다. Set 인터페이스를 구현한 클래스로는 HashSet과 TreeSet이 있는데 HashSet의 경우 정렬을 해주지 않고 TreeSet의 경우 자동정렬을 해준다는 차이점이 있습니다. Set의 가장 큰 장점은 중복을 자동으로 제거해준다는 점입니다. 만약 한 편의점에서 오늘 방문한 손님의 총숫자를 계산하고 싶을 경우도 있을 것입니다. 이럴 경우 오늘 하루 동안 편의점을 여러 번 방문한 손님은 한 번으로 체크해주어야 정확한 손님의 숫자가 나올것입니다. 이럴 때 Set이 유용하게 쓰입니다. Set이 생긴 모양은 아래와 같습니다.  
+
+ 
+
+Set은 위 그림과 같이 주머니 형태로 되어 있습니다. 비선형 구조이기에 순서가 없으며 그렇기에 인덱스도 존재하지 않습니다. 그렇기에 값을 추가하거나 삭제할 때에는 내가 추가 혹은 삭제하고자 하는 값이 Set 내부에 있는지 검색 한 뒤 추가나 삭제를 해야 하므로 속도가 List구조에 비해 느립니다.
+
+ 
+
+중복을 걸러내는 과정
+HashSet은 객체를 저장하기 전에 먼저 객체의 hashCode()메소드를 호출해서 해시 코드를 얻어낸 다음 저장되어 있는 객체들의 해시 코드와 비교한 뒤 같은 해시 코드가 있다면 다시 equals() 메소드로 두 객체를 비교해서 true가 나오면 동일한 객체로 판단하고 중복 저장을 하지 않습니다. 문자열을 HashSet에 저장할 경우, 같은 문자열을 갖는 String객체는 동일한 객체로 간주되고 다른 문자열을 갖는 String객체는 다른 객체로 간주되는데, 그 이유는 String클래스가 hashCode()와 equals() 메소드를 재정의해서 같은 문자열일 경우 hashCode()의 리턴 값을 같게, equals()의 리턴 값은 true가 나오도록 했기 때문입니다.
+
+ 
+
+ HashSet 사용법 
+HashSet 선언
+HashSet<Integer> set1 = new HashSet<Integer>();//HashSet생성
+HashSet<Integer> set2 = new HashSet<>();//new에서 타입 파라미터 생략가능
+HashSet<Integer> set3 = new HashSet<Integer>(set1);//set1의 모든 값을 가진 HashSet생성
+HashSet<Integer> set4 = new HashSet<Integer>(10);//초기 용량(capacity)지정
+HashSet<Integer> set5 = new HashSet<Integer>(10, 0.7f);//초기 capacity,load factor지정
+HashSet<Integer> set6 = new HashSet<Integer>(Arrays.asList(1,2,3));//초기값 지정
+HashSet을 기본으로 생성했을때에는 initial capacity(16), load factor(0.75)의 값을 가진 HashSet객체가 생성됩니다. HashSet도 저장공간보다 값이 추가로 들어오면 List처럼 저장공간을 늘리는데 Set은 한 칸씩 저장공간을 늘리지 않고 저장용량을 약 두배로 늘립니다. 여기서 과부하가 많이 발생합니다. 그렇기에 초기에 저장할 데이터 갯수를 알고 있다면 Set의 초기용량을 지정해주는 것이 좋습니다.
+
+ 
+
+HashSet 값 추가
+HashSet<Integer> set = new HashSet<Integer>();//HashSet생성
+set.add(1); //값 추가
+set.add(2);
+set.add(3);
+HashSet에 값을 추가하려면 HashSet의 add(value) 메소드를 사용하면 됩니다. 입력되는 값이 HashSet 내부에 존재하지 않는다면 그 값을 HashSet에 추가하고 true를 반환하고 내부에 값이 존재한다면 false를 반환합니다. 
+
+ 
+
+HashSet 값 삭제
+HashSet<Integer> set = new HashSet<Integer>(Arrays.asList(1,2,3));//HashSet생성
+set.remove(1);//값 1 제거
+set.clear();//모든 값 제거
+HashSet에 값을 제거하려면 HashSet의 remove(value) 메소드를 사용하면 됩니다. 매개변수 value의 값이 HashSet 내부에 존재한다면 그 값을 삭제한 후 true를 반환하고 없다면 false를 반환합니다. 모든 값을 제거하려면 clear() 메소드를 사용하면 됩니다.
+
+ 
+
+HashSet 크기 구하기
+HashSet<Integer> set = new HashSet<Integer>(Arrays.asList(1,2,3));//HashSet생성
+System.out.println(set.size());//set 크기 : 3
+HashSet의 크기를 구하려면 size() 메소드를 사용하면 됩니다.
+
+ 
+
+HashSet 값 출력
+HashSet<Integer> set = new HashSet<Integer>(Arrays.asList(1,2,3));//HashSet생성
+
+System.out.println(set); //전체출력 [1,2,3]
+		
+Iterator iter = set.iterator();	// Iterator 사용
+while(iter.hasNext()) {//값이 있으면 true 없으면 false
+    System.out.println(iter.next());
+}
+Set컬렉션을 그냥 print하게 되면 대괄호 [ ]로 묶여서 set의 전체 값이 출력됩니다. Set에는 인덱스로 객체를 가져오는 get(index) 메소드가 없습니다. 대신 전체 객체를 대상으로 한 번씩 반복해서 가져오는 반복자(Iterator)를 제공합니다. 반복자 이터레이터 인터페이스를 구현한 객체를 말하는데 iterator() 메소드를 호출하면 얻을 수 있습니다. Iterator에서 하나의 객체를 가져올 때는 next() 메소드를 사용합니다. next() 메소드를 사용하기 전에 먼저 가져올 객체가 있는지 확인하는 것이 좋습니다. hasNext() 메소드는 가져올 객체가 있으면 true를 리턴하고 없으면 false를 리턴합니다.
+
+ 
+
+HashSet 값 검색
+HashSet<Integer> set = new HashSet<Integer>(Arrays.asList(1,2,3));//HashSet생성
+System.out.println(set.contains(1)); //set내부에 값 1이 있는지 check : true
+HashSet 내부에 원하는 값이 있는지 확인하고 싶다면 contains(value) 메소드를 사용하면 됩니다. 파라미터로 주어진 객체가 HashSet이 가지고 있다면 true, 아니면 false를 반환합니다.
