@@ -1,0 +1,76 @@
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+
+//public class TemplateA {
+//    	public static void main(String[] args){
+//
+//    		System.out.println(1);
+//    		int [] score = {10,20,30};
+//    		
+//    		try {
+//    		System.out.println(score[3]);
+//    		//인덱스 범위 초과 오류가 발생한다.(ArrayIndexOutOfBoundsException)
+//    		}catch(ArrayIndexOutOfBoundsException e) {
+//    			System.out.println("배열에 범위를 초과했습니다." + e.getMessage());
+//    			e.printStackTrace();
+//    		}// 잘못된 이유도 같이 출력할 수 있다.
+//    		
+//    		try {
+//    		System.out.println(2/0);
+//    		//예외적 상황이 발생...Arithmetic(산술적예외 상황 발생)
+//    		} catch(ArithmeticException e) {
+//    			System.out.println("잘못된 계산입니다.");
+//    			//e 는 변수명이다.
+//    		}
+//    		
+//    		System.out.println(3);
+//    		
+//    		//try 구문에서 첫번째 예외 발생시 catch 구문이 실행되면  예외발생 아래에 다른
+//    		//코드가 있을시 해당 코드는 실행되지 않는다. 이후 캐치구문 밖에 있는 코드들이 실행된다.
+//    		
+//    	}
+// 
+//    }
+//    
+
+
+// 2020 - 10 - 14 예외처리 공부
+
+
+//public class TemplateA {
+//	public static void main(String[] args){
+//		FileWriter f = null;
+//		try {
+//			f = new FileWriter("data.txt");
+//			f.write("hello");
+//			
+//		//Input output 오류 알아보기
+//		//해당 오류는 checkedException 이다.
+//		}catch(IOException e) {
+//			e.printStackTrace();
+//		}finally {
+//			if(f != null) {
+//				try{f.close();
+//					}catch(IOException e) {
+//						e.printStackTrace();
+//				}
+//			}
+//		}		
+//	}
+//}
+
+
+//try with resource statements 를 알아보자
+public class TemplateA {
+	public static void main(String[] args){
+		try(FileWriter f  = new FileWriter("data.txt");){
+			f.write("hello");
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+		//위와 아래는 똑같은 코드이다.
+		//close가 필요한 메소드를 인스턴스화 시키는 코드이다.
+					
+	}
+}
