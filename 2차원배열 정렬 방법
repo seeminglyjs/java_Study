@@ -1,0 +1,47 @@
+import java.util.Arrays;
+import java.util.Comparator;
+
+public class TemplateA {
+		public static void main(String[] args)  {
+			int [][] arr = {{3,5}, {4,2}, {3,4}};
+
+			//2차월 배열 정렬 0번쨰 열 다음 1번째 열 기준(다중 배열 정렬)
+			Arrays.sort(arr, new Comparator<int[]>() {
+			    @Override
+				public int compare(int[] o1, int[] o2) {
+			    	 if(o1[0] == o2[0]) {
+		                 return o1[1] - o2[1];
+			    	 }else {
+			    		 return o1[0] - o2[0]; 
+			    	 }
+		           }
+		        });
+			
+			for(int i = 0; i < 3; i++) {
+				for(int j = 0; j < 2; j++) {
+					System.out.print(arr[i][j] + " ");
+				}
+				System.out.println();
+			}
+		
+		
+		}
+	}
+
+
+
+다음은 구체적인 정렬 문이다. ' Arrays.sort(arr ' 까지는 동일하나 괄호를 닫기 전에 Comparator라는 클래스가 사용된다. 
+이는 정렬을 할 때, 자신이 원하는 조건으로 배열을 정렬할 수 있도록 해준다. (우리는 Comparator를 설명하는 것이 아니기 때문에 여기까지만 이야기하겠다.) 
+현재 정수를 정렬하는 것이기 때문에, 속성은 int를 선언해주고 자신이 원하는 조건의 매소드를 작성해준다. 
+
+ 
+
+if(o1 [0] == o2[0]) 의 부분은 배열의 0번째 위치를 비교해 주고 해당 배열의 위치가 같으면, 
+return o1[1] - o2[1]; 를통해 오름차순 정렬을 해준다. 
+(내림차순으로 바꾸고 싶으면  return o2[1] - o1[1]; 로 좌우만 바꾸어 주면된다.)
+
+ 
+
+else { return o1[0] - o2 [0]; } 는 0번째 열부터 다르기 때문에 0번째 열 기준으로 오름차순으로 정렬해준다.
+
+(마찬가지로 내림차순으로 바꾸고 싶으면  return o2[0] - o1 [0]; 로 좌우만 바꾸어 주면 된다.)
