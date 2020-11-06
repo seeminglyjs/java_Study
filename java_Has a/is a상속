@@ -1,0 +1,224 @@
+
+ 클래스의 관계1) is-a
+
+상속을 사용하게 되면 가장 기본적으로 되는 관계가 바로 "is-a"관계입니다.
+
+class Human{
+    private int age;
+    private String name;
+    Human(int age, String name){
+        this.age = age;
+        this.name = name;
+    }
+    public void HumanInfo(){
+        System.out.println("[정보 출력]");
+        System.out.println("이름 : " + name);
+        System.out.println("나이 : " + age);
+    }
+}
+ 
+class Student extends Human{
+    private String subject;
+    private int number;
+    Student(int age, String name, String subject, int number){
+        super(age, name);
+        this.subject = _subject;
+        this.number = _number;
+    }
+    void StudentInfo(){
+        HumanInfo();
+        System.out.println("학번 : " + number);
+        System.out.println("학과 : " + subject);
+    }
+}
+ 
+public class InheritTest {
+    public static void main(String[] args){
+        Student st1 = new Student(23, "홍길동", "컴퓨터공학", 20130000);
+        Human hu1 = new Human(5, "아기");
+        st1.StudentInfo();
+        hu1.HumanInfo();
+    }
+}
+지난 시간에 보았던 예제입니다.
+
+
+
+이 예제 또한 "is-a"관계입니다.
+
+그럼 도대체 "is-a"관계가 무엇이냐!!!
+
+ is-a 관계
+
+ "A는 B이다" 라는 관계가 성립되는 상속의 관계
+
+ (ex) 한국인은 사람이다(O), 사람은 한국인이다(X))
+
+이러한 관계입니다.
+
+보통 상속을 활용하여 코드를 작성하게 되면 "is-a"관계를 성립하여 만들게 됩니다. 위의 예제를 잠시 봅시다.
+
+class Human{
+    private int age;
+    private String name;
+    Human(int age, String name){
+        this.age = age;
+        this.name = name;
+    }
+    public void HumanInfo(){...}
+}
+ 
+class Student extends Human{
+    private String subject;
+    private int number;
+    Student(int age, String name, String subject, int number){
+        super(age, name);
+        this.subject = _subject;
+        this.number = _number;
+    }
+    public void StudentInfo(){...}
+}
+이 예제에서는 다음과 같은 관계가 성립하죠.
+
+
+ "Student는 Human이다(O)"
+
+ "Human은 Student이다(X)"
+
+
+
+그래서 이 상속관계(is-a)를 가진 코드는 다음과 같은 특징을 가집니다.
+
+
+ 1) 수퍼클래스를 수정하면 서브클래스에 영향을 주지만 서브클래스를 수정하면 수퍼클래스엔 영향을 주지 않는다.
+
+ 2) 서브클래스를 인스턴스로 생성하면 수퍼클래스의 맴버까지 포함한 인스턴스가 생성된다.
+
+
+
+
+
+
+ 클래스의 관계2) has-a
+
+사실 "has-a"관계는 "상속"이라기 보다는 "포함"에 가깝습니다.
+
+(상속으로도 만들 수 있지만 포함이라고 해야 사실 정답입니다.)
+
+ has-a 관계
+
+ "A는 B를 가지고 있다" 라는 관계가 성립되는 포함의 관계
+
+ (ex) 군인은 총알을 가지고 있다(O), 총알은 군인을 가지고 있다(X))
+
+
+
+이 관계를 토대로 코드를 한번 짜봅시다.
+
+class Gun{
+    final private int MAX_BULLET = 60;
+    private int cur_bullet;
+    private int damage;
+    Gun(int cur_bullet, int damage){
+        if(cur_bullet >  MAX_BULLET)
+            this.cur_bullet = MAX_BULLET;
+        else
+            this.cur_bullet = cur_bullet;
+        this.damage = damage;
+    }
+    int getCurBullet(){
+        return cur_bullet;
+    }
+    void shot(){
+        if(cur_bullet <= 0)
+            System.out.println("총알이 부족합니다.");
+        else{
+            System.out.println("총 발사!");
+            cur_bullet--;
+        }
+    }
+    void gunInfo(){
+        System.out.println("[총 정보]");
+        System.out.println("총알 정보 : " + cur_bullet + "/" + MAX_BULLET);
+        System.out.println("총 데미지 : " + damage);
+    }
+}
+ 
+class Soilder{
+    final private int HP = 100;
+    private boolean Helmet;
+    private boolean Armor;
+    private int AP;
+    private Gun gun;
+    Soilder(boolean Helmet, boolean Armor, int cur_bullet, int damage){
+        if(Helmet && Armor)
+            AP = 100;
+        else if(Helmet || Armor)
+            AP = 50;
+        else
+            AP = 0;
+        gun = new Gun(cur_bullet, damage);
+    }
+    void soilderInfo(){
+        System.out.println("[군인 정보]");
+        System.out.println("체력 : " + HP);
+        System.out.println("방어막 : " + AP);
+        gun.gunInfo();
+    }
+    void shot(){
+        gun.shot();
+    }
+}
+public class CompositionTest {
+    public static void main(String[] args){
+        Soilder sol = new Soilder(true, true, 40, 23);
+        sol.shot();
+        sol.shot();
+        sol.soilderInfo();
+    }
+}
+아주 긴 예제입니다. 하지만 내용은 정말로 별거 없습니다.
+
+주의깊게 봐야할 구절은 여기입니다.
+
+class Soilder{
+    ...
+    private Gun gun;
+    Soilder(boolean Helmet, boolean Armor, int cur_bullet, int damage){
+        ...
+        gun = new Gun(cur_bullet, damage);
+    }
+    void soilderInfo(){...}
+    void shot(){...}
+}
+Soilder는 Gun 클래스를 상속(extends)하는 것이 아니라 내부에 인스턴스를 따로 생성하므로 
+
+"Soilder는 Gun을 가지고 있다"의 관계가 성립하게 됩니다.
+
+
+
+그래서 이렇게 만든 코드는 다음과 같은 특징을 가집니다.
+
+
+ 1) 여러 클래스를(조각난 클래스를) 하나로 합쳐서 만들기 때문에 조각 프로그래밍이 편해진다.
+
+
+
+
+ 
+
+이로서 "상속의 기본"에 대해서 알아보았습니다. 
+
+
+
+이번 단원에서는 따로 연습문제를 내지 않았습니다.
+
+그 대신에 이전단원의 연습문제를 "has-a"관계로 한번 만들어보세요.
+
+
+
+다음시간에는 "오버로딩과 오버라이딩"에 대하여 알아보겠습니다.
+
+
+
+출처: https://eskeptor.tistory.com/51 [Hello World]
